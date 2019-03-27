@@ -1,13 +1,13 @@
 import React from "react";
-import Book from "../Book";
+import Book from "./Book";
 
-export default class WantToRead extends React.PureComponent {
+export default class Shelf extends React.PureComponent {
   render() {
-    const { books } = this.props;
+    const { books, title } = this.props;
 
     return (
       <div className="bookshelf">
-        <h2 className="bookshelf-title">Want to Read</h2>
+        <h2 className="bookshelf-title">{title}</h2>
         <div className="bookshelf-books">
           <ol className="books-grid">
             {books.map(book => (

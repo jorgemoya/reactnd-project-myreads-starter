@@ -1,9 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import CurrentlyReading from "./Bookshelves/CurrentlyReading";
-import WantToRead from "./Bookshelves/WantToRead";
-import Read from "./Bookshelves/Read";
 import * as BooksAPI from "./../BooksAPI";
+import Shelf from "./Shelf";
 
 export default class BooksList extends React.PureComponent {
   state = {
@@ -35,9 +33,12 @@ export default class BooksList extends React.PureComponent {
         </div>
         <div className="list-books-content">
           <div>
-            <CurrentlyReading books={this.state.currentlyReading} />
-            <WantToRead books={this.state.wantToRead} />
-            <Read books={this.state.read} />
+            <Shelf
+              books={this.state.currentlyReading}
+              title="Currently Reading"
+            />
+            <Shelf books={this.state.wantToRead} title="Want to Read" />
+            <Shelf books={this.state.read} title="Read" />
           </div>
         </div>
         <div className="open-search">
