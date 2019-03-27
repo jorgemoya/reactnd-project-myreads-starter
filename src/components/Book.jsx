@@ -1,6 +1,13 @@
 import React from "react";
+import ShelfChanger from "./ShelfChanger";
 
 export default class Book extends React.PureComponent {
+  updateShelf = newShelf => {
+    const { book, updateBook } = this.props;
+
+    updateBook(book, newShelf);
+  };
+
   render() {
     const { book } = this.props;
 
@@ -12,23 +19,17 @@ export default class Book extends React.PureComponent {
             style={{
               width: 128,
               height: 193,
-              backgroundImage: `url("${book.imageLinks.thumbnail}")`
+              backgroundImage: `url("${
+                book.imageLinks ? book.imageLinks.thumbnail : ""
+              }")`
             }}
           />
-          <div className="book-shelf-changer">
-            <select>
-              <option value="move" disabled>
-                Move to...
-              </option>
-              <option value="currentlyReading">Currently Reading</option>
-              <option value="wantToRead">Want to Read</option>
-              <option value="read">Read</option>
-              <option value="none">None</option>
-            </select>
-          </div>
+          <ShelfChanger shelf={book.shelf} updateShelf={this.updateShelf} />
         </div>
         <div className="book-title">{book.title}</div>
-        <div className="book-authors">{book.authors.join(", ")}</div>
+        {book.authors && (
+          <div className="book-authors">{book.authors.join(", ")}</div>
+        )}
       </div>
     );
   }

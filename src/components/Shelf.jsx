@@ -3,7 +3,7 @@ import Book from "./Book";
 
 export default class Shelf extends React.PureComponent {
   render() {
-    const { books, title } = this.props;
+    const { books, title, updateBook } = this.props;
 
     return (
       <div className="bookshelf">
@@ -12,7 +12,7 @@ export default class Shelf extends React.PureComponent {
           <ol className="books-grid">
             {books.map(book => (
               <li key={book.id}>
-                <Book book={book} />
+                <Book book={book} updateBook={updateBook} />
               </li>
             ))}
           </ol>

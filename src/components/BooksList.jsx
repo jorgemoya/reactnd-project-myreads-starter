@@ -3,29 +3,66 @@ import { Link } from "react-router-dom";
 import * as BooksAPI from "./../BooksAPI";
 import Shelf from "./Shelf";
 
+const SHELVES = {
+  CURRENTLY_READING: "currentlyReading",
+  WANT_TO_READ: "wantToRead",
+  READ: "read"
+};
+
 export default class BooksList extends React.PureComponent {
   state = {
-    currentlyReading: [],
-    wantToRead: [],
-    read: []
+    shelf: {
+      currentlyReading: [],
+      wantToRead: [],
+      read: []
+    }
   };
 
   componentDidMount() {
     BooksAPI.getAll().then(books => {
-      console.log(books);
       const currentlyReading = books.filter(
-        book => book.shelf === "currentlyReading"
+        book => book.shelf === SHELVES.CURRENTLY_READING
       );
+      const wantToRead = books.filter(
+        book => book.shelf === SHELVES.WANT_TO_READ
+      );
+      const read = books.filter(book => book.shelf === SHELVES.READ);
 
-      const wantToRead = books.filter(book => book.shelf === "wantToRead");
-
-      const read = books.filter(book => book.shelf === "read");
-
-      this.setState({ currentlyReading, wantToRead, read });
+      this.setState({ shelf: { currentlyReading, wantToRead, read } });
     });
   }
 
+  updateBook = (book, newShelf) => {
+    BooksAPI.update(book, newShelf).then(shelf => {
+      Promise.all([
+        Promise.all(
+          shelf.currentlyReading.map(bookId =>
+            BooksAPI.get(bookId).then(book => book)
+          )
+        ),
+        Promise.all(
+          shelf.wantToRead.map(bookId =>
+            BooksAPI.get(bookId).then(book => book)
+          )
+        ),
+        Promise.all(
+          shelf.read.map(bookId => BooksAPI.get(bookId).then(book => book))
+        )
+      ]).then(books =>
+        this.setState({
+          shelf: {
+            currentlyReading: books[0],
+            wantToRead: books[1],
+            read: books[2]
+          }
+        })
+      );
+    });
+  };
+
   render() {
+    const { currentlyReading, wantToRead, read } = this.state.shelf;
+
     return (
       <div className="list-books">
         <div className="list-books-title">
@@ -34,11 +71,16 @@ export default class BooksList extends React.PureComponent {
         <div className="list-books-content">
           <div>
             <Shelf
-              books={this.state.currentlyReading}
+              books={currentlyReading}
               title="Currently Reading"
+              updateBook={this.updateBook}
             />
-            <Shelf books={this.state.wantToRead} title="Want to Read" />
-            <Shelf books={this.state.read} title="Read" />
+            <Shelf
+              books={wantToRead}
+              title="Want to Read"
+              updateBook={this.updateBook}
+            />
+            <Shelf books={read} title="Read" updateBook={this.updateBook} />
           </div>
         </div>
         <div className="open-search">
