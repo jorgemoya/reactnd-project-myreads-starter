@@ -104,7 +104,10 @@ class BooksApp extends React.Component {
                 </div>
               )}
             />
-            <Route path="/search" component={Search} />
+            <Route
+              path="/search"
+              render={() => <Search updateBook={this.updateBook} />}
+            />
           </Switch>
         </div>
       </BrowserRouter>

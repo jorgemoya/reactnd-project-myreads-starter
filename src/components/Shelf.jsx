@@ -8,7 +8,11 @@ export default class Shelf extends React.PureComponent {
     return (
       <div className="bookshelf">
         <h2 className="bookshelf-title">{title}</h2>
-        <ListBooks books={books} updateBook={updateBook} />
+        <div className="bookshelf-books">
+          <ol className="books-grid">
+            <ListBooks books={books} updateBook={updateBook} />
+          </ol>
+        </div>
       </div>
     );
   }

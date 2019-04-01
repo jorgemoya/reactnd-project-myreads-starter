@@ -1,8 +1,35 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import * as BooksAPI from "./../BooksAPI";
+import ListBooks from "./ListBooks";
 
 export default class Search extends React.PureComponent {
+  state = {
+    books: [],
+    query: ""
+  };
+
+  queryBooks = event => {
+    const query = event.target.value;
+    this.setState({ query });
+
+    if (!query) {
+      this.setState({ books: [] });
+
+      return;
+    }
+
+    BooksAPI.search(query).then(books => {
+      Array.isArray(books)
+        ? // ? this.setState({ books: this.addShelf(books) })
+          this.setState({ books })
+        : this.setState({ books: [] });
+    });
+  };
+
   render() {
+    const { updateBook } = this.props;
+
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -18,11 +45,18 @@ export default class Search extends React.PureComponent {
                   However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
                   you don't find a specific author or title. Every search is limited by search terms.
                 */}
-            <input type="text" placeholder="Search by title or author" />
+            <input
+              type="text"
+              value={this.state.query}
+              onChange={this.queryBooks}
+              placeholder="Search by title or author"
+            />
           </div>
         </div>
         <div className="search-books-results">
-          <ol className="books-grid" />
+          <ol className="books-grid">
+            <ListBooks books={this.state.books} updateBook={updateBook} />
+          </ol>
         </div>
       </div>
     );
