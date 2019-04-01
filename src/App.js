@@ -11,7 +11,7 @@ export const SHELVES = {
   READ: "read"
 };
 
-class BooksApp extends React.Component {
+class BooksApp extends React.PureComponent {
   state = {
     shelves: {
       currentlyReading: [],

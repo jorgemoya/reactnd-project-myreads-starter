@@ -1,18 +1,18 @@
 import React from "react";
 import Book from "./Book";
 
-export default class ListBooks extends React.PureComponent {
-  render() {
-    const { books, updateBook } = this.props;
+const ListBooks = props => {
+  const { books, updateBook } = props;
 
-    return (
-      <>
-        {books.map(book => (
-          <li key={book.id}>
-            <Book book={book} updateBook={updateBook} />
-          </li>
-        ))}
-      </>
-    );
-  }
-}
+  return (
+    <>
+      {books.map(book => (
+        <li key={book.id}>
+          <Book book={book} updateBook={updateBook} />
+        </li>
+      ))}
+    </>
+  );
+};
+
+export default ListBooks;
