@@ -46,6 +46,12 @@ class BooksApp extends React.PureComponent {
     });
   }
 
+  /**
+   * @description Updates the shelf of an existing book
+   * @constructor
+   * @param {object} book - Book object
+   * @param {string} newShelf - New shelf the book will be linked to
+   */
   updateBook = (book, newShelf) => {
     return BooksAPI.update(book, newShelf).then(shelf => {
       Promise.all([

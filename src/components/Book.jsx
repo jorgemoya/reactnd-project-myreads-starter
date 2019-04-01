@@ -4,6 +4,11 @@ import ShelfSwitcher from "./ShelfSwitcher";
 const Book = props => {
   const { book, updateBook } = props;
 
+  /**
+   * @description Updates the shelf of an existing book
+   * @constructor
+   * @param {string} newShelf - New shelf the book will be linked to
+   */
   function updateShelf(newShelf) {
     updateBook(book, newShelf);
   }

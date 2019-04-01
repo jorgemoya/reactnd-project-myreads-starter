@@ -9,6 +9,11 @@ export default class Search extends React.PureComponent {
     query: ""
   };
 
+  /**
+   * @description Queries for books to search
+   * @constructor
+   * @param {Event} event - The onChange event
+   */
   queryBooks = event => {
     const query = event.target.value;
     this.setState({ query });
@@ -28,6 +33,12 @@ export default class Search extends React.PureComponent {
     });
   };
 
+  /**
+   * @description Updates the shelf of an existing book
+   * @constructor
+   * @param {object} bookToUpdate - Book object
+   * @param {string} newShelf - New shelf the book will be linked to
+   */
   updateBook = (bookToUpdate, newShelf) => {
     const { updateBook } = this.props;
 
