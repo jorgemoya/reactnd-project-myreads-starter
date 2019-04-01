@@ -1,5 +1,5 @@
 import React from "react";
-import Book from "./Book";
+import ListBooks from "./ListBooks";
 
 export default class Shelf extends React.PureComponent {
   render() {
@@ -8,15 +8,7 @@ export default class Shelf extends React.PureComponent {
     return (
       <div className="bookshelf">
         <h2 className="bookshelf-title">{title}</h2>
-        <div className="bookshelf-books">
-          <ol className="books-grid">
-            {books.map(book => (
-              <li key={book.id}>
-                <Book book={book} updateBook={updateBook} />
-              </li>
-            ))}
-          </ol>
-        </div>
+        <ListBooks books={books} updateBook={updateBook} />
       </div>
     );
   }
