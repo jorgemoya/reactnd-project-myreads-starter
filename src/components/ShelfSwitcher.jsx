@@ -1,6 +1,6 @@
 import React from "react";
 
-export default class ShelfChanger extends React.PureComponent {
+export default class ShelfSwitcher extends React.PureComponent {
   render() {
     const { shelf, updateShelf } = this.props;
     return (

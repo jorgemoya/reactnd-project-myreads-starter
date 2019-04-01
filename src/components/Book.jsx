@@ -1,5 +1,5 @@
 import React from "react";
-import ShelfChanger from "./ShelfChanger";
+import ShelfSwitcher from "./ShelfSwitcher";
 
 export default class Book extends React.PureComponent {
   updateShelf = newShelf => {
@@ -24,7 +24,7 @@ export default class Book extends React.PureComponent {
               }")`
             }}
           />
-          <ShelfChanger shelf={book.shelf} updateShelf={this.updateShelf} />
+          <ShelfSwitcher shelf={book.shelf} updateShelf={this.updateShelf} />
         </div>
         <div className="book-title">{book.title}</div>
         {book.authors && (
