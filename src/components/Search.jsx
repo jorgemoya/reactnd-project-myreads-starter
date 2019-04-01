@@ -21,15 +21,30 @@ export default class Search extends React.PureComponent {
 
     BooksAPI.search(query).then(books => {
       Array.isArray(books)
-        ? // ? this.setState({ books: this.addShelf(books) })
-          this.setState({ books })
+        ? Promise.all(books.map(book => BooksAPI.get(book.id))).then(books =>
+            this.setState({ books })
+          )
         : this.setState({ books: [] });
     });
   };
 
-  render() {
+  updateBook = (bookToUpdate, newShelf) => {
     const { updateBook } = this.props;
 
+    updateBook(bookToUpdate, newShelf).then(() => {
+      const books = this.state.books.map(book => {
+        if (book.id === bookToUpdate.id) {
+          book.shelf = newShelf;
+        }
+
+        return book;
+      });
+
+      this.setState({ books });
+    });
+  };
+
+  render() {
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -55,7 +70,7 @@ export default class Search extends React.PureComponent {
         </div>
         <div className="search-books-results">
           <ol className="books-grid">
-            <ListBooks books={this.state.books} updateBook={updateBook} />
+            <ListBooks books={this.state.books} updateBook={this.updateBook} />
           </ol>
         </div>
       </div>

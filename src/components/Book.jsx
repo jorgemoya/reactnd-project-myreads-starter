@@ -1,7 +1,7 @@
 import React from "react";
 import ShelfSwitcher from "./ShelfSwitcher";
 
-export default class Book extends React.PureComponent {
+export default class Book extends React.Component {
   updateShelf = newShelf => {
     const { book, updateBook } = this.props;
 

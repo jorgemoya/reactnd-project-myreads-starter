@@ -5,7 +5,7 @@ import Shelf from "./components/Shelf";
 import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
 import * as BooksAPI from "./BooksAPI";
 
-const SHELVES = {
+export const SHELVES = {
   CURRENTLY_READING: "currentlyReading",
   WANT_TO_READ: "wantToRead",
   READ: "read"
@@ -22,20 +22,32 @@ class BooksApp extends React.Component {
 
   componentDidMount() {
     BooksAPI.getAll().then(books => {
-      const currentlyReading = books.filter(
-        book => book.shelf === SHELVES.CURRENTLY_READING
-      );
-      const wantToRead = books.filter(
-        book => book.shelf === SHELVES.WANT_TO_READ
-      );
-      const read = books.filter(book => book.shelf === SHELVES.READ);
+      const currentlyReading = [];
+      const wantToRead = [];
+      const read = [];
+
+      books.forEach(book => {
+        switch (book.shelf) {
+          case SHELVES.CURRENTLY_READING:
+            currentlyReading.push(book);
+            break;
+          case SHELVES.WANT_TO_READ:
+            wantToRead.push(book);
+            break;
+          case SHELVES.READ:
+            read.push(book);
+            break;
+          default:
+            break;
+        }
+      });
 
       this.setState({ shelves: { currentlyReading, wantToRead, read } });
     });
   }
 
   updateBook = (book, newShelf) => {
-    BooksAPI.update(book, newShelf).then(shelf => {
+    return BooksAPI.update(book, newShelf).then(shelf => {
       Promise.all([
         Promise.all(
           shelf.currentlyReading.map(bookId =>
